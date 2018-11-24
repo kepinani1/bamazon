@@ -1,4 +1,5 @@
 var mysql = require("mysql");
+var inquirer = require("inquirer");
 
 var connection = mysql.createConnection({
     host: "localhost",
@@ -31,8 +32,8 @@ function start() {
             // based on their answer, either call the shop or not shop
             if (answer.shopOrnot.toUpperCase() === "SHOP") {
                 queryDisplay();
-                queryProductID();
-                queryProductQty();
+                //I tried to launch queryProduct here once the user selects the 'SHOP' option
+                // queryProduct();
             }
             else {
                 end();
@@ -50,14 +51,16 @@ function queryDisplay() {
             console.log(res[i].item_id + " | " + res[i].product_name + " | " + res[i].department_name + " | " + res[i].price + " | " + res[i].stock_quantity);
             console.log("-----------------------------------");
         }
-    },
-        function queryProductID() {
-            inquirer.prompt([
-                {
-                    type: "input",
-                    name: "id",
-                    message: "What is the ID of the product you would like to buy?",
-                    validate: function (value) {
+    }
+    )}
+// function queryProduct(){
+    // Created a series of questions
+inquirer.prompt([
+    {
+      type: "input",
+      name: "id",
+      message: "What is the ID of the product you would like to buy?",
+      validate: function (value) {
                         if (isNaN(value) == false && parseInt(value) <= res.length && parseInt(value) > 0) {
                             return true;
                         } else {
@@ -65,8 +68,6 @@ function queryDisplay() {
                         }
                     }
                 },
-                function queryProductQty() {
-                    inquirer.prompt([
                         {
                             type: "input",
                             name: "quantity",
@@ -104,4 +105,3 @@ function queryDisplay() {
                             end();
                         }
                     });
-                }
